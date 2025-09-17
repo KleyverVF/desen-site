@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Algoritmos em JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            color: #333;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #007bff;
+        }
+
+        label {
+            display: block;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 3px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #007bff;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        pre {
+            background: #222;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: left;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Algoritmos em JavaScript</h1>
+
+    <div class="container">
+
+        <h2>1) Contar Inteiros</h2>
+        <label>Lista (separada por vírgulas):</label>
+        <input type="text" id="listaInteiros" value="1, 2.5, 3, 4, abc, 5, 9.9">
+        <label>Limite N:</label>
+        <input type="number" id="limiteInteiros" value="6">
+        <button onclick="executarContagem()">Executar</button>
+
+        <h2>2) Soma Total</h2>
+        <label>Lista de números:</label>
+        <input type="text" id="listaSoma" value="10, 20, 30, 40">
+        <button onclick="executarSoma()">Executar</button>
+
+        <h2>3) QuickSort</h2>
+        <label>Lista de números:</label>
+        <input type="text" id="listaOrdenar" value="12, 7, 5, 18, 3, 9">
+        <button onclick="executarOrdenacao()">Executar</button>
+
+        <h2>4) Verificar Primo</h2>
+        <label>Número:</label>
+        <input type="number" id="numeroPrimo" value="29">
+        <button onclick="executarPrimo()">Executar</button>
+
+        <h2>5) Máximo Divisor Comum</h2>
+        <label>Valor X:</label>
+        <input type="number" id="valorX" value="48">
+        <label>Valor Y:</label>
+        <input type="number" id="valorY" value="180">
+        <button onclick="executarMDC()">Executar</button>
+
+        <h2>6) Fibonacci</h2>
+        <label>Quantidade de termos:</label>
+        <input type="number" id="qtdFibo" value="8">
+        <button onclick="executarFibonacci()">Executar</button>
+
+    </div>
+
+    <h2>Resultado:</h2>
+    <pre id="saida"></pre>
+
+    <script>
+        // ----------------- ALGORITMOS -----------------
+        function contaInteiros(lista, limite) {
+            let qtd = 0;
+            for (let i = 0; i < limite && i < lista.length; i++) {
+                if (Number.isInteger(lista[i])) {
+                    qtd++;
+                }
+            }
+            return qtd;
+        }
+
+        function somaTotal(valores) {
+            let resultado = 0;
+            for (const v of valores) {
+                resultado += v;
+            }
+            return resultado;
+        }
+
+        function ordenarRapido(vetor) {
+            if (vetor.length <= 1) return vetor;
+            const meio = Math.floor(vetor.length / 2);
+            const pivo = vetor[meio];
+            const menores = [], iguais = [], maiores = [];
+            for (const el of vetor) {
+                if (el < pivo) menores.push(el);
+                else if (el > pivo) maiores.push(el);
+                else iguais.push(el);
+            }
+            return [...ordenarRapido(menores), ...iguais, ...ordenarRapido(maiores)];
+        }
+
+        function verificaPrimo(n) {
+            if (n < 2) return false;
+            if (n % 2 === 0 && n !== 2) return false;
+            let divisor = 3;
+            while (divisor <= Math.sqrt(n)) {
+                if (n % divisor === 0) return false;
+                divisor += 2;
+            }
+            return true;
+        }
+
+        function calculaMDC(x, y) {
+            do {
+                let aux = y;
+                y = x % y;
+                x = aux;
+            } while (y !== 0);
+            return x;
+        }
+
+        function geraFibonacci(qtd) {
+            if (qtd <= 0) return [];
+            if (qtd === 1) return [0];
+            let resultado = [0, 1];
+            let i = 2;
+            while (i < qtd) {
+                resultado.push(resultado[i - 1] + resultado[i - 2]);
+                i++;
+            }
+            return resultado;
+        }
+
+        // ----------------- FUNÇÕES DE EXECUÇÃO -----------------
+        function executarContagem() {
+            const listaStr = document.getElementById("listaInteiros").value.split(",");
+            const lista = listaStr.map(v => isNaN(v) ? v.trim() : Number(v));
+            const limite = Number(document.getElementById("limiteInteiros").value);
+            const resultado = contaInteiros(lista, limite);
+            mostrarSaida("Total de inteiros encontrados: " + resultado);
+        }
+
+        function executarSoma() {
+            const lista = document.getElementById("listaSoma").value
+                .split(",").map(Number);
+            const resultado = somaTotal(lista);
+            mostrarSaida("Soma geral = " + resultado);
+        }
+
+        function executarOrdenacao() {
+            const lista = document.getElementById("listaOrdenar").value
+                .split(",").map(Number);
+            const resultado = ordenarRapido(lista);
+            mostrarSaida("Lista organizada: " + resultado.join(" | "));
+        }
+
+        function executarPrimo() {
+            const numero = Number(document.getElementById("numeroPrimo").value);
+            const resultado = verificaPrimo(numero);
+            mostrarSaida(`O número ${numero} é primo? ${resultado}`);
+        }
+
+        function executarMDC() {
+            const x = Number(document.getElementById("valorX").value);
+            const y = Number(document.getElementById("valorY").value);
+            const resultado = calculaMDC(x, y);
+            mostrarSaida("MDC de " + x + " e " + y + ": " + resultado);
+        }
+
+        function executarFibonacci() {
+            const termos = Number(document.getElementById("qtdFibo").value);
+            const resultado = geraFibonacci(termos);
+            mostrarSaida(`Sequência de Fibonacci (${termos} termos): ${resultado.join(", ")}`);
+        }
+
+        // ----------------- UTILITÁRIO -----------------
+        function mostrarSaida(texto) {
+            document.getElementById("saida").textContent = texto;
+        }
+    </script>
+</body>
+
+</html>
