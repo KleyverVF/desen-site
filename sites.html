@@ -118,7 +118,7 @@
     <pre id="saida"></pre>
 
     <script>
-        // ----------------- ALGORITMOS -----------------
+        
         function contaInteiros(lista, limite) {
             let qtd = 0;
             for (let i = 0; i < limite && i < lista.length; i++) {
@@ -182,7 +182,7 @@
             return resultado;
         }
 
-        // ----------------- FUNÇÕES DE EXECUÇÃO -----------------
+       
         function executarContagem() {
             const listaStr = document.getElementById("listaInteiros").value.split(",");
             const lista = listaStr.map(v => isNaN(v) ? v.trim() : Number(v));
@@ -224,11 +224,12 @@
             mostrarSaida(`Sequência de Fibonacci (${termos} termos): ${resultado.join(", ")}`);
         }
 
-        // ----------------- UTILITÁRIO -----------------
+       
         function mostrarSaida(texto) {
             document.getElementById("saida").textContent = texto;
         }
     </script>
 </body>
+
 
 </html>
